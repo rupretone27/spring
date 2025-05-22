@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유향록</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        
+        header {
+            background-color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .hot-products {
+            max-width: 1200px;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+            height: 500px;
+        }
+        
+        .hot-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 400px;
+        }
+        
+        .slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .slide-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            width: 90%;
+            display: flex;
+            align-items: center;
+            height: 350px;
+        }
+        
+        .product-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            margin-right: 40px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-name {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #222;
+        }
+        
+        .product-description {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .view-detail {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+            border: 2px solid #333;
+        }
+        
+        .view-detail:hover {
+            background-color: white;
+            color: #333;
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .slider-dot.active {
+            background-color: #333;
+        }
+        
+        .brand-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .brand-section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .brand-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .brand-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .brand-item {
+            width: 180px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        
+        .brand-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .brand-logo {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            background-color: white;
+            padding: 15px;
+        }
+        
+        .brand-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .brand-products {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 40px;
+        }
+        
+        .brand-products.show {
+            display: block;
+        }
+        
+        .brand-products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            background: none;
+            border: none;
+        }
+        
+        .brand-products-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .brand-products-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .brand-product-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .brand-product-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .brand-product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .brand-product-info {
+            padding: 20px;
+        }
+        
+        .brand-product-name {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .brand-product-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .brand-product-link:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">유향록</div>
+    </header>
+    
+    <div class="hot-products">
+        <h2 class="hot-title">HOT PRODUCTS</h2>
+        <div class="slider" id="slider">
+            <!-- 제품 1 - YSL 러브샤인 럼 오일 글로스 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <img src="https://www.yslbeauty.co.kr/dw/image/v2/AAQP_PRD/on/demandware.static/-/Sites-ysb-master-catalog/default/dw8b3e3d9f/LoveShine/LoveShine/3354275633445_LoveShine_RumOilGloss_8ml_001_ShineRum.jpg?sw=500&sh=500&sm=fit" class="product-image" alt="YSL 러브샤인 럼 오일 글로스">
+                    <div class="product-info">
+                        <h3 class="product-name">러브샤인 럼 오일 글로스</h3>
+                        <p class="product-description">
+                            한 번의 터치로 눈부신 광체<br>
+                            두번의 터치로 암도적인 물품감
+                        </p>
+                        <a href="https://www.yslbeauty.co.kr/%EB%A3%B0%EC%A5%AC-%EB%9F%AC%EB%B8%8C%EC%83%A4%EC%9D%B8-%EB%9F%BC-%EC%98%A4%EC%9D%BC-%EA%B8%80%EB%A1%9C%EC%8A%A4/3354275633445.html" class="view-detail" target="_blank">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 제품 2 - 샤넬 넘버5 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <img src="https://www.chanel.com/images//t_one//w_0.55,h_0.55,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.2/w_1240/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-107580-8848377102366.jpg" class="product-image" alt="샤넬 넘버5">
+                    <div class="product-info">
+                        <h3 class="product-name">샤넬 넘버5 오드 빠르펭</h3>
+                        <p class="product-description">
+                            전설적인 플로럴 알데하이드 향<br>
+                            100년이 넘는 시간 동안 사랑받는 클래식
+                        </p>
+                        <a href="https://www.chanel.com/kr/fragrance/p/107580/n5-eau-de-parfum-spray/" class="view-detail" target="_blank">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 제품 3 - 디오르 자도르 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <img src="https://www.dior.com/beauty/version-5.1432740071912/resize-image/ep/430/100/0/packshot%2Fproduct%2FY0996001_F099600001_E01_ZHC.jpg" class="product-image" alt="디오르 자도르">
+                    <div class="product-info">
+                        <h3 class="product-name">디오르 자도르 오드 빠르펭</h3>
+                        <p class="product-description">
+                            황금빛 향기의 여신<br>
+                            우아함과 고혹미가 공존하는 디오르의 아이콘
+                        </p>
+                        <a href="https://www.dior.com/ko_kr/beauty/products/Y0996001-%EC%9E%90%EB%8F%84%EB%A5%B4-%EC%98%A4%EB%93%9C-%EB%B9%A0%EB%A5%B4%ED%8E%AD" class="view-detail" target="_blank">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 제품 4 - 조 말론 우드 세이지 앤 씨 솔트 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <img src="https://www.jomalone.co.kr/media/export/cms/products/1000x1000/jo_sku_L0LM01_1000x1000_0.jpg" class="product-image" alt="조 말론 우드 세이지 앤 씨 솔트">
+                    <div class="product-info">
+                        <h3 class="product-name">우드 세이지 앤 씨 솔트</h3>
+                        <p class="product-description">
+                            바다와 숲을 동시에 느낄 수 있는<br>
+                            상쾌하면서도 따뜻한 향기
+                        </p>
+                        <a href="https://www.jomalone.co.kr/product/24624/326/wood-sage-sea-salt-cologne" class="view-detail" target="_blank">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 제품 5 - 구찌 블룸 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <img src="https://media.gucci.com/style/DarkGray_Center_0_0_2400x2400/1674824093/696849_KA0MG_9065_001_100_0000_Light-Gucci-Bloom-Eau-de-Parfum.jpg" class="product-image" alt="구찌 블룸">
+                    <div class="product-info">
+                        <h3 class="product-name">구찌 블룸 오드 빠르펭</h3>
+                        <p class="product-description">
+                            따스한 여성미가 느껴지는<br>
+                            재스민의 우아한 향기
+                        </p>
+                        <a href="https://www.gucci.com/kr/ko/pr/fragrance/beauty-for-women/eau-de-parfum-for-women/gucci-bloom-eau-de-parfum-p-696849KA0MG9065" class="view-detail" target="_blank">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slider-nav">
+            <div class="slider-dot active" onclick="goToSlide(0)"></div>
+            <div class="slider-dot" onclick="goToSlide(1)"></div>
+            <div class="slider-dot" onclick="goToSlide(2)"></div>
+            <div class="slider-dot" onclick="goToSlide(3)"></div>
+            <div class="slider-dot" onclick="goToSlide(4)"></div>
+        </div>
+    </div>
+
+    <div class="brand-section">
+        <h2 class="brand-section-title">TOP BRANDS</h2>
+        <div class="brand-container">
+            <!-- 첫 번째 줄 (5개 브랜드) -->
+            <div class="brand-row">
+                <div class="brand-item" onclick="showBrandProducts('chanel')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Chanel_logo.png/800px-Chanel_logo.png" class="brand-logo" alt="Chanel">
+                    <div class="brand-name">Chanel</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('dior')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Dior_logo.png/800px-Dior_logo.png" class="brand-logo" alt="Dior">
+                    <div class="brand-name">Dior</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('ysl')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Yves_Saint_Laurent_Logo.svg/800px-Yves_Saint_Laurent_Logo.svg.png" class="brand-logo" alt="YSL">
+                    <div class="brand-name">Yves Saint Laurent</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('gucci')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Gucci_Logo.png/800px-Gucci_Logo.png" class="brand-logo" alt="Gucci">
+                    <div class="brand-name">Gucci</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('tomford')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Tom_Ford_Logo.svg/800px-Tom_Ford_Logo.svg.png" class="brand-logo" alt="Tom Ford">
+                    <div class="brand-name">Tom Ford</div>
+                </div>
+            </div>
+            
+            <!-- 두 번째 줄 (5개 브랜드) -->
+            <div class="brand-row">
+                <div class="brand-item" onclick="showBrandProducts('joMalone')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Jo_Malone_London_logo.svg/800px-Jo_Malone_London_logo.svg.png" class="brand-logo" alt="Jo Malone">
+                    <div class="brand-name">Jo Malone</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('hermes')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Herm%C3%A8s_logo.svg/800px-Herm%C3%A8s_logo.svg.png" class="brand-logo" alt="Hermès">
+                    <div class="brand-name">Hermès</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('byredo')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Byredo_Logo.svg/800px-Byredo_Logo.svg.png" class="brand-logo" alt="Byredo">
+                    <div class="brand-name">Byredo</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('creed')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Creed_logo.svg/800px-Creed_logo.svg.png" class="brand-logo" alt="Creed">
+                    <div class="brand-name">Creed</div>
+                </div>
+                <div class="brand-item" onclick="showBrandProducts('lelabo')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Le_Labo_logo.svg/800px-Le_Labo_logo.svg.png" class="brand-logo" alt="Le Labo">
+                    <div class="brand-name">Le Labo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 브랜드 제품 팝업 -->
+    <div id="brand-products" class="brand-products">
+        <div class="brand-products-container">
+            <button class="close-btn" onclick="closeBrandProducts()">&times;</button>
+            <h2 class="brand-products-title" id="brand-products-title">브랜드 제품</h2>
+            <div class="brand-products-list" id="brand-products-list">
+                <!-- 제품들이 여기에 동적으로 로드됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 슬라이더 기능
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const slider = document.getElementById('slider');
+        
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // 도트 업데이트
+            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                if(index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlider();
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        }
+        
+        // 자동 슬라이드
+        setInterval(nextSlide, 5000);
+        
+        // 초기 슬라이더 위치 설정
+        updateSlider();
+
+        // 브랜드 제품 데이터
+const brandProducts = {
+    ysl: [
+        { 
+            name: "리브르 플라워 화이트 플로럴", 
+            image: "images/ysl1.jpg", 
+            description: "순수한 백색 꽃들의 향기",
+            price: "180,000원",
+            link: "https://www.yslbeauty.co.kr/퍼퓸-리브르-플라워-화이트-플로럴/3354271567642.html" 
+        },
+        { 
+            name: "마이셀프 르 퍼퓸", 
+            image: "images/ysl2.jpg", 
+            description: "당신만을 위한 특별한 향",
+            price: "200,000원",
+            link: "https://www.yslbeauty.co.kr/퍼퓸-마이셀프-르-퍼퓸/3354271567643.html" 
+        },
+        { 
+            name: "Y 엘릭시어 퍼퓸", 
+            image: "images/ysl3.jpg", 
+            description: "빛나는 파리의 밤",
+            price: "170,000원",
+            link: "https://www.yslbeauty.co.kr/퍼퓸-y-엘릭시어/3354271293080.html" 
+        },
+        { 
+            name: "리브르 앱솔루트 플라틴", 
+            image: "images/ysl4.jpg", 
+            description: "절대적인 자유의 향기",
+            price: "220,000원",
+            link: "https://www.yslbeauty.co.kr/퍼퓸-리브르-앱솔루트-플라틴/3354271567645.html" 
+        }
+    ],
+    dior: [
+        { 
+            name: "미스 디올 블루밍 부케 헤어 미스트", 
+            image: "images/dior1.jpg", 
+            description: "머리카락까지 향기롭게",
+            price: "90,000원",
+            link: "https://www.dior.com/ko_kr/beauty/products/Y0996001-미스-디올-블루밍-부케-헤어-미스트" 
+        },
+        { 
+            name: "쟈도르 오 드 퍼퓸", 
+            image: "images/dior2.jpg", 
+            description: "디올의 아이코닉한 향기",
+            price: "210,000원",
+            link: "https://www.dior.com/ko_kr/beauty/products/Y0996001-자도르-오-드-퍼퓸" 
+        },
+        { 
+            name: "쟈도르 퍼퓸 도", 
+            image: "images/dior3.jpg", 
+            description: "더욱 강렬한 쟈도르",
+            price: "230,000원",
+            link: "https://www.dior.com/ko_kr/beauty/products/Y0996039-자도르-퍼퓸-도" 
+        },
+        { 
+            name: "옴므 오 드 뚜왈렛", 
+            image: "images/dior4.jpg", 
+            description: "상쾌한 남성 향수",
+            price: "150,000원",
+            link: "https://www.dior.com/ko_kr/beauty/products/H2581001-옴므-오-드-뚜왈렛" 
+        }
+    ],
+    chanel: [
+        { 
+            name: "블루 드 샤넬", 
+            image: "images/chanel1.jpg", 
+            description: "남성적인 우아함의 정석",
+            price: "190,000원",
+            link: "https://www.chanel.com/kr/fragrance/p/108190/bleu-de-chanel-eau-de-parfum-spray/" 
+        },
+        { 
+            name: "알뤼르 옴므 스포츠 슈퍼레제라", 
+            image: "images/chanel2.jpg", 
+            description: "스포티한 남성 향수",
+            price: "170,000원",
+            link: "https://www.chanel.com/kr/fragrance/p/108200/allure-homme-sport-eau-extreme-spray/" 
+        },
+        { 
+            name: "샹스 오 스플렌디드", 
+            image: "images/chanel3.jpg", 
+            description: "우아한 여성 향수",
+            price: "210,000원",
+            link: "https://www.chanel.com/kr/fragrance/p/108060/coco-mademoiselle-eau-de-parfum-spray/" 
+        },
+        { 
+            name: "가브리엘 샤넬", 
+            image: "images/chanel4.jpg", 
+            description: "우아하고 고급스러운 향",
+            price: "210,000원",
+            link: "https://www.chanel.com/kr/fragrance/p/108230/gabrielle-chanel-essence-eau-de-parfum-spray/" 
+        }
+    ],
+    gucci: [
+        { 
+            name: "뿌르 팜므", 
+            image: "images/gucci1.jpg", 
+            description: "우아함의 정석",
+            price: "200,000원",
+            link: "https://www.gucci.com/us/en/ca/fragrance/for-women/for-women-pour-femme-c-womens-fragrance-p-471497RGRTG9791" 
+        },
+        { 
+            name: "하트 오브 레오", 
+            image: "images/gucci2.jpg", 
+            description: "감각적인 플로럴 향",
+            price: "190,000원",
+            link: "https://www.gucci.com/us/en/ca/fragrance/for-women/for-women-guilty-pour-femme-eau-de-parfum-p-471497RGRTG9792" 
+        },
+        { 
+            name: "엘릭서 드 퍼퓸 푸르 팜므 퍼퓸", 
+            image: "images/gucci3.jpg", 
+            description: "강렬한 버전의 푸르 팜므",
+            price: "230,000원",
+            link: "https://www.gucci.com/us/en/ca/fragrance/for-women/for-women-pour-femme-eau-de-parfum-p-471497RGRTG9793" 
+        },
+        { 
+            name: "어 플로럴 벌스 오 드 퍼퓸", 
+            image: "images/gucci4.jpg", 
+            description: "꽃 향기가 가득한 여성스러운 향",
+            price: "180,000원",
+            link: "https://www.gucci.com/us/en/ca/fragrance/for-women/for-women-flora-gorgeous-gardenia-eau-de-parfum-p-471497RGRTG9794" 
+        }
+    ],
+    tomford: [
+        { 
+            name: "네롤리 포르토피노 오 드 퍼퓸", 
+            image: "images/tomford1.jpg", 
+            description: "상쾌한 시트러스 향",
+            price: "230,000원",
+            link: "https://www.tomford.com/neroli-portofino-eau-de-parfum/TFDEDP030.html" 
+        },
+        { 
+            name: "블랙 오키드 오 드 뚜왈렛", 
+            image: "images/tomford2.jpg", 
+            description: "신비로운 오리엔탈 향",
+            price: "250,000원",
+            link: "https://www.tomford.com/black-orchid-eau-de-toilette/TFDEDT010.html" 
+        },
+        { 
+            name: "투스칸 레더 오 드 퍼퓸", 
+            image: "images/tomford3.jpg", 
+            description: "가죽 향기의 매력",
+            price: "240,000원",
+            link: "https://www.tomford.com/tuscan-leather-eau-de-parfum/TFDEDP020.html" 
+        },
+        { 
+            name: "페뷸러스 오 드 퍼퓸", 
+            image: "images/tomford4.jpg", 
+            description: "매력적인 향기",
+            price: "260,000원",
+            link: "https://www.tomford.com/fucking-fabulous-eau-de-parfum/TFDEDP040.html" 
+        }
+    ],
+    joMalone: [
+        { 
+            name: "타이프 로즈 코롱 인텐스", 
+            image: "images/jomalone1.jpg", 
+            description: "강렬한 장미 향기",
+            price: "140,000원",
+            link: "https://www.jomalone.co.kr/product/26384/54452/intense-collection/red-roses-cologne-intense" 
+        },
+        { 
+            name: "히노키 앤 시더우드 코롱 인텐스", 
+            image: "images/jomalone2.jpg", 
+            description: "우디한 향기의 조화",
+            price: "150,000원",
+            link: "https://www.jomalone.co.kr/product/26384/54452/intense-collection/hinoki-cologne-intense" 
+        },
+        { 
+            name: "퍼 앤 아르테미지아 코롱", 
+            image: "images/jomalone3.jpg", 
+            description: "신선한 허브 향기",
+            price: "145,000원",
+            link: "https://www.jomalone.co.kr/product/26384/54452/colognes/pear-freesia-cologne" 
+        },
+        { 
+            name: "스칼렛 포피 코롱 인텐스", 
+            image: "images/jomalone4.jpg", 
+            description: "강렬한 양귀비 향기",
+            price: "155,000원",
+            link: "https://www.jomalone.co.kr/product/26384/54452/intense-collection/scarlet-poppy-cologne-intense" 
+        }
+    ],
+    hermes: [
+        { 
+            name: "Eau de pamplemousse rose 오 드 코롱", 
+            image: "images/hermes1.jpg", 
+            description: "상쾌한 자몽과 로즈의 조화",
+            price: "120,000원",
+            link: "https://www.hermes.com/kr/ko/product/eau-de-pamplemousse-rose-eau-de-cologne-H2001980v100/" 
+        },
+        { 
+            name: "Un Jardin en Mediterranee 오 드 뚜왈렛", 
+            image: "images/hermes2.jpg", 
+            description: "지중해 정원의 향기",
+            price: "130,000원",
+            link: "https://www.hermes.com/kr/ko/product/un-jardin-en-mediterranee-eau-de-toilette-H2001980v100/" 
+        },
+        { 
+            name: "L'Ombre des Merveilles 오 드 퍼퓸", 
+            image: "images/hermes3.jpg", 
+            description: "신비로운 밤의 향기",
+            price: "150,000원",
+            link: "https://www.hermes.com/kr/ko/product/l-ombre-des-merveilles-eau-de-parfum-H2001980v100/" 
+        },
+        { 
+            name: "Santal Massoia 오 드 뚜왈렛", 
+            image: "images/hermes4.jpg", 
+            description: "우디한 향기의 매력",
+            price: "140,000원",
+            link: "https://www.hermes.com/kr/ko/product/santal-massoia-eau-de-toilette-H2001980v100/" 
+        }
+    ],
+    byredo: [
+        { 
+            name: "블랑쉬 오 드 퍼퓸", 
+            image: "images/byredo1.jpg", 
+            description: "순수하고 깨끗한 향기",
+            price: "220,000원",
+            link: "https://www.byredo.com/kr_en/blanche-eau-de-parfum" 
+        },
+        { 
+            name: "앱솔뤼 드 퍼퓸", 
+            image: "images/byredo2.jpg", 
+            description: "강렬한 우디 향기",
+            price: "240,000원",
+            link: "https://www.byredo.com/kr_en/absolu-desprit-eau-de-parfum" 
+        },
+        { 
+            name: "익스트레잇 드 퍼퓸 렌드뉘", 
+            image: "images/byredo3.jpg", 
+            description: "따뜻한 바닐라 향기",
+            price: "260,000원",
+            link: "https://www.byredo.com/kr_en/extrait-de-parfum-reine-de-nuit" 
+        },
+        { 
+            name: "상탈 33", 
+            image: "images/byredo4.jpg", 
+            description: "따뜻하고 중후한 나무 향기",
+            price: "220,000원",
+            link: "https://www.byredo.com/kr_en/santal-33-eau-de-parfum" 
+        }
+    ],
+    creed: [
+        { 
+            name: "어벤투스", 
+            image: "images/creed1.jpg", 
+            description: "상쾌한 남성 향수",
+            price: "350,000원",
+            link: "https://www.creedboutique.com/product/aventus-cologne/" 
+        },
+        { 
+            name: "엘라다리아", 
+            image: "images/creed2.jpg", 
+            description: "상쾌한 여름의 시작",
+            price: "340,000원",
+            link: "https://www.creedboutique.com/product/erolfa/" 
+        },
+        { 
+            name: "앱솔루 어벤투스", 
+            image: "images/creed3.jpg", 
+            description: "강렬한 버전의 어벤투스",
+            price: "380,000원",
+            link: "https://www.creedboutique.com/product/aventus-absolu/" 
+        },
+        { 
+            name: "브와 뒤 포르투갈", 
+            image: "images/creed4.jpg", 
+            description: "포르투갈의 신선한 바람",
+            price: "360,000원",
+            link: "https://www.creedboutique.com/product/bois-du-portugal/" 
+        }
+    ],
+    lelabo: [
+        { 
+            name: "유칼립투스 20", 
+            image: "images/lelabo1.jpg", 
+            description: "상쾌한 유칼립투스 향",
+            price: "280,000원",
+            link: "https://www.lelabofragrances.com/eucalyptus-20.html" 
+        },
+        { 
+            name: "라방드 31", 
+            image: "images/lelabo2.jpg", 
+            description: "따뜻한 라벤더 향",
+            price: "290,000원",
+            link: "https://www.lelabofragrances.com/lavande-31.html" 
+        },
+        { 
+            name: "떼 마차26", 
+            image: "images/lelabo3.jpg", 
+            description: "차 향기의 우아함",
+            price: "300,000원",
+            link: "https://www.lelabofragrances.com/the-matcha-26.html" 
+        },
+        { 
+            name: "떼 누아29", 
+            image: "images/lelabo4.jpg", 
+            description: "차와 담배 잎의 조화",
+            price: "300,000원",
+            link: "https://www.lelabofragrances.com/the-noir-29.html" 
+        }
+    ]
+};
+
+        // 브랜드 제품 보여주기
+        function showBrandProducts(brand) {
+            const brandProductsElement = document.getElementById('brand-products');
+            const brandTitleElement = document.getElementById('brand-products-title');
+            const brandListElement = document.getElementById('brand-products-list');
+            
+            // 브랜드 이름 설정
+            const brandName = document.querySelector(`.brand-item[onclick="showBrandProducts('${brand}')`).querySelector('.brand-name').textContent;
+            brandTitleElement.textContent = brandName;
+            
+            // 제품 목록 초기화
+            brandListElement.innerHTML = '';
+            
+            // 제품 추가
+            brandProducts[brand].forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.className = 'brand-product-item';
+                productItem.innerHTML = `
+                    <img src="${product.image}" class="brand-product-image" alt="${product.name}">
+                    <div class="brand-product-info">
+                        <h3 class="brand-product-name">${product.name}</h3>
+                        <a href="${product.link}" class="brand-product-link" target="_blank">구매하기</a>
+                    </div>
+                `;
+                brandListElement.appendChild(productItem);
+            });
+            
+            // 팝업 표시
+            brandProductsElement.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 브랜드 제품 닫기
+        function closeBrandProducts() {
+            document.getElementById('brand-products').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
